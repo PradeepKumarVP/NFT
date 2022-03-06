@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My First DAPP</title>
+  <link rel="stylesheet" href="./css/bootstrap.min.css">
+</head>
+<body>
+
+  <div class="container">
+    <div class="row">
+      <div class="col col-12 col-md-6 col-sm-6 col-xs-6">
+        <button type="button" class="btn btn-block btn-lg" onclick="App.showRegisterPage()">Register</button>
+      </div>
+      <div class="col col-12 col-md-6 col-sm-6 col-xs-6">
+        <button type="button" class="btn btn-block btn-lg" onclick="App.showViewPage()">View</button>
+      </div>
+    </div>
+    <br>
+    <div class="row" style="display: none;" id="viewpage">
+      <div class="col col-12 col-md-12 col-sm-12 col-xs-12" style="background-color:azure;">
+        <table class="table">
+          <tr>
+            <th>id</th>
+            <th>E_Address</th>
+            <th>Role</th>
+          </tr>
+          <tbody id="disp"></tbody>
+        </table>
+       
+        </div>
+      </div>
+    </div>
+    <div class="row" style="display: none;" id="registerpage">
+      <div class="col col-12 col-md-12 col-sm-12 col-xs-12" style="background-color:azure;">
+
+        <div class="table">
+          <table class="table">
+            <select id="roles" class="form-control">
+              <option value="1">student</option>
+              <option value="2">Teacher</option>
+              <option value="3">Office</option>
+            </select>
+          <tr>
+            <td colspan="2" style="text-align: center;"><button type="button" class="btn btn-primary btn-lg" onclick="App.updateValues()">Register</button></td>
+          </tr>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="studentdashboard" style="display:none">
+      <h1>Welcome to Student dashboard</h1>
+    </div>
+    <div id="teacherdashboard" style="display:none">
+      <h1>Welcome to Teacher dashboard</h1>
+    </div>
+    <div id="officedashboard" style="display:none">
+      <h1>Welcome to Office dashboard</h1>
+    </div>
+
+
+  </div>
+  
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="./js/bootstrap.min.js"></script>
+  <script src="./js/truffle-contract.js"></script>
+  <script src="./js/web3.min.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>
