@@ -54,72 +54,59 @@ App = {
   },
   loadContract: async () => {
     // Create a JavaScript version of the smart contract
-    const Student = await $.getJSON('Student.json')
-    App.contracts.Student = TruffleContract(Student)
-    App.contracts.Student.setProvider(App.web3Provider)
+    const CrowdFunding = await $.getJSON('CrowdFunding.json')
+    App.contracts.CrowdFunding = TruffleContract(CrowdFunding)
+    App.contracts.CrowdFunding.setProvider(App.web3Provider)
     // Hydrate the smart contract with values from the blockchain
-    App.student = await App.contracts.Student.deployed()
+    App.crowd = await App.contracts.CrowdFunding.deployed()
   },
   render: async () => {
-    var role = await App.student.roles(App.account);
-    window.alert(role);
-    if(role=="1"){
-      $("#studentdashboard").show();
-      $("#teacherdashboard").hide();
-      $("#officedashboard").hide();
-      $("#registerpage").hide();
-    }
-    else if(role=="2"){
-      $("#studentdashboard").hide();
-      $("#teacherdashboard").show();
-      $("#officedashboard").hide();
-      $("#registerpage").hide();
-    }
-    else if(role=="3"){
-      $("#studentdashboard").hide();
-      $("#teacherdashboard").hide();
-      $("#officedashboard").show();
-      $("#registerpage").hide();
-    }
-    else{
-      $("#studentdashboard").hide();
-      $("#teacherdashboard").hide();
-      $("#officedashboard").hide();
-      $("#registerpage").show();
-    }
+    
   }  ,
-  showData: async ()=>{
-    await App.loadWeb3()
-    await App.loadAccount()
-    await App.loadContract()
-    await App.render();
-  }  ,
-  updateValues: async ()=>{
-   var roles = $("#roles").val();
-   //window.alert(n,p,d,a);
-   await App.student.registerUser(roles,{from:App.account})
-   await App.render();
-  }  ,
-  showRegisterPage: async ()=>{
-    //$("#registerpage").show();
-    $("#viewpage").hide();
+  showDonatePage:async () =>{
+    $("#donatepage").show();
+    $("#balancepage").hide();
+    // $("#transferfrompage").hide();
+    // $("#balancepage").hide();
   },
-  showViewPage: async ()=>{
-    $("#registerpage").hide();
-    $("#viewpage").show();
-    $("#disp").empty();
+  showDistributePage:async () =>{
+    $("#donatepage").hide();
+    $("#balancepage").hide();
+    await App.crowd.releaseFund({from:App.account});
+    // $("#balancepage").hide();
+    // $("#balancepage").hide();
+  },
+  
+  showRegisterPage:async () =>{
+    $("#donatepage").hide();
+    $("#balancepage").hide();
+    await App.crowd.register({from:App.account});
+  },
+  showbalancePage:async () =>{
+    $("#donatepage").hide();
+    $("#balancepage").show();
+    var bal=await App.crowd.balanceamount();
+    bal=bal/1000000000000000000;
+    $("#dispbal").html(bal.toString());
+    // $("#transferfrompage").hide();
+    // $("#balancepage").show();
+  } ,
+  donateAmount:async () =>{   
+    var amt=$("#transferamount").val();  
+    amt=parseInt(amt)*1000000000000000000;
+    await App.crowd.donateAmount({from: App.account,value:amt.toString()});
+  },
 
-    var total=await App.student.totalUsers();
-    for(var i=1;i<=total;i++){
-      var st=await App.student.users(parseInt(i))
-      var str="<tr><td>" +st[0]+"</td><td>"+st[1]+"</td><td>"+st[2]+"</td></tr>";
-      $("#disp").append(str);
-    }
+  fetchBalance:async () =>{
+    var toadr=$("#balanceaddress").val();
+    var bal=await App.token.balanceOf(toadr);
+    $("#dispbalnce").html(bal.toString())    
   }
+ 
 }
 
-
 $(document).ready(async function(){
-  await App.load();
+   await App.load();
 });
+
 

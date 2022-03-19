@@ -1,5 +1,4 @@
-var Migrations = artifacts.require("./Student.sol");
-
+var Migrations = artifacts.require("./CrowdFunding.sol");
 module.exports = function(deployer) {
   deployer.deploy(Migrations);
 };
