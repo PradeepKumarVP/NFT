@@ -54,55 +54,21 @@ App = {
   },
   loadContract: async () => {
     // Create a JavaScript version of the smart contract
-    const CrowdFunding = await $.getJSON('CrowdFunding.json')
-    App.contracts.CrowdFunding = TruffleContract(CrowdFunding)
-    App.contracts.CrowdFunding.setProvider(App.web3Provider)
+    const Shapes = await $.getJSON('Shapes.json')
+    App.contracts.Shapes = TruffleContract(Shapes)
+    App.contracts.Shapes.setProvider(App.web3Provider)
     // Hydrate the smart contract with values from the blockchain
-    App.crowd = await App.contracts.CrowdFunding.deployed()
+    App.shapes = await App.contracts.Shapes.deployed()
+   
   },
   render: async () => {
     
-  }  ,
-  showDonatePage:async () =>{
-    $("#donatepage").show();
-    $("#balancepage").hide();
-    // $("#transferfrompage").hide();
-    // $("#balancepage").hide();
-  },
-  showDistributePage:async () =>{
-    $("#donatepage").hide();
-    $("#balancepage").hide();
-    await App.crowd.releaseFund({from:App.account});
-    // $("#balancepage").hide();
-    // $("#balancepage").hide();
-  },
-  
-  showRegisterPage:async () =>{
-    $("#donatepage").hide();
-    $("#balancepage").hide();
-    await App.crowd.register({from:App.account});
-  },
-  showbalancePage:async () =>{
-    $("#donatepage").hide();
-    $("#balancepage").show();
-    var bal=await App.crowd.balanceamount();
-    bal=bal/1000000000000000000;
-    $("#dispbal").html(bal.toString());
-    // $("#transferfrompage").hide();
-    // $("#balancepage").show();
   } ,
-  donateAmount:async () =>{   
-    var amt=$("#transferamount").val();  
-    amt=parseInt(amt)*1000000000000000000;
-    await App.crowd.donateAmount({from: App.account,value:amt.toString()});
-  },
-
-  fetchBalance:async () =>{
-    var toadr=$("#balanceaddress").val();
-    var bal=await App.token.balanceOf(toadr);
-    $("#dispbalnce").html(bal.toString())    
+  showDonatePage: async () =>{
+    var price=0.1;
+    price=price*1000000000000000000;
+    await App.shapes.buy({ from:App.account,value:price.toString()})
   }
- 
 }
 
 $(document).ready(async function(){
